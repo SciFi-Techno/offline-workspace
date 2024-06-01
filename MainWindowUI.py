@@ -14,16 +14,17 @@ class MainWindow(QMainWindow):
         layout_2 = QHBoxLayout()
 
         # Create page selection bar and add it to layout_2
-        page_selector = self.add_page_selector()
+        self.page_selector = self.add_page_selector()
         layout_2.addStretch()
-        layout_2.addWidget(page_selector, Qt.AlignCenter)
+        layout_2.addWidget(self.page_selector, Qt.AlignCenter)
         layout_2.addStretch()
 
         # Nest layout_2 under layout_1
         layout_1.addLayout(layout_2)
 
         # Placeholder for further widgets
-        #layout_1.addWidget()
+        self.text_space = self.add_text_space()
+        layout_1.addWidget(self.text_space)
 
         # Create the widget that houses all other widgets
         widget = QWidget()
@@ -34,24 +35,39 @@ class MainWindow(QMainWindow):
         self.showMaximized()
 
     '''
-    This function creates and adds the page selection 
+    This function creates and returns the page selection 
     bar at the top of the main window
     '''
     def add_page_selector(self):
+        # Initialize the page selection bar
         page_selector = QComboBox()
         page_selector.setFixedWidth(400)
         page_selector.setFixedHeight(35)
+
+        # Allow user to add new pages
         page_selector.setEditable(True)
-        page_selector.setInsertPolicy(QComboBox.InsertAlphabetically)
-        page_selector.currentIndexChanged.connect(self.selection_change)
+
+        # New pages are added to bottom of the pages list
+        page_selector.setInsertPolicy(QComboBox.InsertAtBottom)
+
+        # Carry out actions based on changes to page selection bar
+        page_selector.currentIndexChanged.connect(self.page_selection_actions)
         return page_selector
 
     '''
-    This function carries out some action upon 
+    This function creates and returns the text space
+    '''
+    def add_text_space(self):
+        text_space = QTextEdit()
+        return text_space
+
+    '''
+    This function carries out some action upon
     selection of a page
     '''
-    def selection_change(self, selected):
-        print(selected)
+    def page_selection_actions(self, selected_index):
+        print(selected_index, self.page_selector.itemText(selected_index))
+
 
 app = QApplication([])
 
