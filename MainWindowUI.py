@@ -2,7 +2,6 @@ import PageSelection
 import TextSpace
 
 from PyQt5.QtCore import *
-from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 class MainWindow(QMainWindow):
@@ -30,7 +29,7 @@ class MainWindow(QMainWindow):
         layout_1.addLayout(layout_2)
 
         # Add a text space for user input
-        self.text_space = TextSpace.TextSpace()
+        self.text_space = TextSpace.InputTextSpace(self.page_selector)
         layout_1.addWidget(self.text_space)
 
         # Create the widget that houses all other widgets

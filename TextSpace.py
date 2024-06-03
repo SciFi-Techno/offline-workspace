@@ -1,29 +1,46 @@
-import MainWindowUI
+from Data import data_storage, data_cursor
 
 from PyQt5.QtWidgets import QTextEdit
 
-class TextSpace(QTextEdit):
+class InputTextSpace(QTextEdit):
 
     """
     This function creates the text space and sets the signal
     for retrieving user written text
     """
-    def __init__(self):
+    def __init__(self, page_selector):
         super().__init__()
+
+        # Access to PageSelection object
+        self.page_selection_bar = page_selector
+        self.page_selection_bar.set_text_space(self)
+
         self.textChanged.connect(self.getText)
 
-        self.__data_dict = {}
-
     '''
-    This function obtains the user written text
+    This function obtains and saves the user written text into
+    a database
     '''
     def getText(self):
-        index = MainWindowUI.window.page_selector.current_page_index()
-        self.__data_dict[index] = self.toPlainText()
-        print(self.__data_dict)
 
-    def check_key_in_dict(self, page_index):
-        if page_index in self.__data_dict:
-            return True
+        # Obtain the current page's index
+        index = self.page_selection_bar.current_page_index()
+
+        # Check if there is any data on the current page
+        if len(self.toPlainText()) == 0:
+
+            # Add the current page's data and index to the database storage
+            data_cursor.execute("""
+                        INSERT INTO pages_data VALUES
+                            (?, ?)""", (index, self.toPlainText()))
         else:
-            return False
+
+            # If there already is data, update the entry in database
+            data_cursor.execute("UPDATE pages_data SET data = ? WHERE page_index = ?",
+                                (self.toPlainText(), index))
+
+        data_storage.commit()
+
+        # TESTING
+        res = data_cursor.execute("SELECT * FROM pages_data")
+        print(res.fetchall())
