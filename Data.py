@@ -7,4 +7,4 @@ data_storage = sqlite3.connect("workspace_data.db")
 data_cursor = data_storage.cursor()
 
 # Create the table that stores the data
-data_cursor.execute("CREATE TABLE pages_data(page_index, data)")
+data_cursor.execute("CREATE TABLE IF NOT EXISTS pages_data(page_index, data)")

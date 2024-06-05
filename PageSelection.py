@@ -1,6 +1,7 @@
-from Data import data_cursor
+from Data import data_storage, data_cursor
 
 from PyQt5.QtWidgets import QComboBox
+import numpy as np
 
 class PageSelector(QComboBox):
 
@@ -22,7 +23,8 @@ class PageSelector(QComboBox):
         # New pages added to bottom of pages list
         self.setInsertPolicy(QComboBox.InsertAtBottom)
 
-        self.input_space = 0
+        # Placeholder variable for holding the TextSpace object
+        self.input_space = None
 
         self.currentIndexChanged.connect(self.page_selection_change)
 
@@ -44,21 +46,35 @@ class PageSelector(QComboBox):
         cursor.movePosition(cursor.End)
         cursor.select(cursor.Document)
 
-        # Obtain list of pages made by user
-        index_list = data_cursor.execute("SELECT page_index FROM pages_data")
-        for indexes in index_list.fetchall():
-            if selected_index not in indexes:
+        # The following code adds, updates, and retrieves pages and their data from the database
+        index_list_1 = data_cursor.execute("SELECT page_index FROM pages_data")
 
-                # Remove cursor selected text/Clear the currently written input if a new page is made
-                cursor.removeSelectedText()
-            else:
+        # Check if there are any pages in the database
+        if len(index_list_1.fetchall()) == 0:
 
-                # Replace the currently written input with a selected page's respective data
+            # If there are no pages, add a page to the database when a user creates a new page
+            data_cursor.execute("""
+                        INSERT INTO pages_data VALUES
+                            (?, '')""", (selected_index, ))
+            data_storage.commit()
+        else:
+
+            # Obtain all page indexes in the database and convert to a numpy array
+            index_list_2 = data_cursor.execute("SELECT page_index FROM pages_data")
+            indexes = np.array(index_list_2.fetchall())
+
+            # If the current user-selected page exists in the database, retrieve its data from database
+            if selected_index in indexes:
                 data = data_cursor.execute("SELECT data FROM pages_data WHERE page_index = ?", (selected_index,))
                 cursor.insertText(data.fetchone()[0])
 
-                # TESTING
-                print(data.fetchall())
+            # Add a new user-made page into the database
+            else:
+                cursor.removeSelectedText()
+                data_cursor.execute("""
+                            INSERT INTO pages_data VALUES
+                                (?, '')""", (selected_index, ))
+                data_storage.commit()
 
     '''
     This function retrieves the current page's index
