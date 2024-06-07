@@ -1,5 +1,4 @@
-import PageSelection
-import TextSpace
+import PageSelection, TextSpace, ImageDialogButton
 
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
@@ -19,10 +18,12 @@ class MainWindow(QMainWindow):
         layout_1 = QVBoxLayout()
         layout_2 = QHBoxLayout()
 
-        # Create page selection bar and add it to layout_2
+        # Create page selection bar, and a button and add both to layout_2
         self.page_selector = PageSelection.PageSelector()
-        layout_2.addStretch()
+        self.image_button = ImageDialogButton.ButtonImages()
+        #layout_2.addStretch()
         layout_2.addWidget(self.page_selector, Qt.AlignCenter)
+        layout_2.addWidget(self.image_button, Qt.AlignRight)
         layout_2.addStretch()
 
         # Nest layout_2 under layout_1

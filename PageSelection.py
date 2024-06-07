@@ -14,7 +14,7 @@ class PageSelector(QComboBox):
         super().__init__()
 
         # Set fixed width and height of the bar
-        self.setFixedWidth(400)
+        self.setFixedWidth(250)
         self.setFixedHeight(35)
 
         # Allow user to make new pages by editing directly from bar
