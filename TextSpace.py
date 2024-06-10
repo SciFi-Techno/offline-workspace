@@ -15,14 +15,14 @@ class InputTextSpace(QTextEdit):
         self.page_selection_bar = page_selector
         self.page_selection_bar.set_text_space(self)
 
-        self.textChanged.connect(self.getText)
+        self.textChanged.connect(self.setText)
 
 
     '''
     This function obtains and saves the user written text into
     a database
     '''
-    def getText(self):
+    def setText(self):
 
         # Obtain the current page's index
         index = self.page_selection_bar.current_page_index()
@@ -31,3 +31,7 @@ class InputTextSpace(QTextEdit):
         data_cursor.execute("UPDATE pages_data SET data = ? WHERE page_index = ?",
                             (self.toPlainText(), index))
         data_storage.commit()
+
+    def setImage(self, image):
+        cursor = self.textCursor()
+        cursor.insertImage(image)

@@ -18,19 +18,16 @@ class MainWindow(QMainWindow):
         layout_1 = QVBoxLayout()
         layout_2 = QHBoxLayout()
 
-        # Create page selection bar, and a button and add both to layout_2
+        # Create page selection bar, a text space, and a button and add the first two components to layout_2
         self.page_selector = PageSelection.PageSelector()
-        self.image_button = ImageDialogButton.ButtonImages()
-        #layout_2.addStretch()
+        self.text_space = TextSpace.InputTextSpace(self.page_selector)
+        self.image_button = ImageDialogButton.ButtonImages(self.text_space)
         layout_2.addWidget(self.page_selector, Qt.AlignCenter)
         layout_2.addWidget(self.image_button, Qt.AlignRight)
         layout_2.addStretch()
 
-        # Nest layout_2 under layout_1
+        # Nest layout_2 under layout_1 and add the button to layer 1
         layout_1.addLayout(layout_2)
-
-        # Add a text space for user input
-        self.text_space = TextSpace.InputTextSpace(self.page_selector)
         layout_1.addWidget(self.text_space)
 
         # Create the widget that houses all other widgets
