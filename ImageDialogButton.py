@@ -8,8 +8,11 @@ class ButtonImages(QPushButton):
         # Creates a button for inserting images
         self.setText("Insert Image")
 
-        # Set dimensions of the button
+        # Set dimensions and color of the button
         self.setFixedSize(110, 35)
+        self.setStyleSheet("""
+            background-color: #b6d7a8;
+            color: black;""")
 
         self.input_space = input_text_space
 

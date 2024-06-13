@@ -15,6 +15,12 @@ class InputTextSpace(QTextEdit):
         self.page_selection_bar = page_selector
         self.page_selection_bar.set_text_space(self)
 
+        # Set color of the text space
+        self.setStyleSheet("""
+            background-color: #b6d7a8;
+            color: black;
+            """)
+
         self.textChanged.connect(self.setText)
 
     '''

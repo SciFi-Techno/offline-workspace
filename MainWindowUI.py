@@ -33,6 +33,13 @@ class MainWindow(QMainWindow):
         # Create the widget that houses all other widgets
         widget = QWidget()
         widget.setLayout(layout_1)
+
+        # Set the colors of the widget
+        widget.setStyleSheet("""
+            background-color: #d9ead3;
+            color: grey;
+            """)
+
         self.setCentralWidget(widget)
 
         # Open window as full screen

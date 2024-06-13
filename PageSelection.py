@@ -17,6 +17,12 @@ class PageSelector(QComboBox):
         self.setFixedWidth(250)
         self.setFixedHeight(35)
 
+        # Set color of the bar
+        self.setStyleSheet("""
+            background-color: #b6d7a8;
+            color: black;
+            """)
+
         # Allow user to make new pages by editing directly from bar
         self.setEditable(True)
 
