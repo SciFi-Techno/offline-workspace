@@ -66,7 +66,7 @@ class PageSelector(QComboBox):
             # If the current user-selected page exists in the database, retrieve its data from database
             if selected_index in indexes:
                 data = data_cursor.execute("SELECT data FROM pages_data WHERE page_index = ?", (selected_index,))
-                cursor.insertText(data.fetchone()[0].decode(errors="ignore"))
+                cursor.insertText(str(data.fetchone()[0].decode()))
 
             # Add a new user-made page into the database
             else:
